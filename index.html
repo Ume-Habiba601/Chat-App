@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#100d16" />
+  <title>VYRA — AI Chat Studio</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <div class="brand-logo"><i class="fa-solid fa-asterisk"></i></div>
+        <div><h1>VYRA<span>.</span></h1><small>AI CHAT STUDIO</small></div>
+        <button class="icon-btn mobile-close" id="closeSidebar" title="Close menu"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <button class="new-chat-btn" id="newChat">
+        <i class="fa-solid fa-plus"></i> New conversation
+        <span>⌘ K</span>
+      </button>
+
+      <div class="side-label">WORKSPACE</div>
+      <nav class="nav-list">
+        <button class="nav-item active" data-view="chats"><i class="fa-regular fa-comments"></i> Messages <span class="nav-count" id="chatCount">0</span></button>
+        <button class="nav-item" data-view="status"><i class="fa-regular fa-circle-play"></i> Status <span class="live-dot"></span></button>
+        <button class="nav-item" data-view="communities"><i class="fa-solid fa-people-group"></i> Communities</button>
+        <button class="nav-item" data-view="channels"><i class="fa-solid fa-tower-broadcast"></i> Channels</button>
+        <button class="nav-item" data-view="calls"><i class="fa-solid fa-phone"></i> Calls</button>
+        <button class="nav-item" data-view="ai"><i class="fa-solid fa-wand-magic-sparkles"></i> AI assistant</button>
+      </nav>
+
+      <div class="side-label history-label">RECENT CHATS <button id="clearSearch" title="Clear search"><i class="fa-solid fa-rotate-left"></i></button></div>
+      <div class="search-box"><i class="fa-solid fa-magnifying-glass"></i><input id="searchChats" placeholder="Search conversations..."></div>
+      <div class="chat-history" id="chatHistory"></div>
+
+      <div class="sidebar-bottom">
+        <div class="profile-row">
+          <div class="avatar avatar-me">H</div>
+          <div class="profile-info"><strong id="profileName">Habiba</strong><small id="authStatus">Local profile</small></div>
+          <button class="icon-btn" id="authBtn" title="Sign in with Google"><i class="fa-solid fa-cloud-arrow-up"></i></button>
+          <button class="icon-btn" id="settingsBtn" title="Settings"><i class="fa-solid fa-sliders"></i></button>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <div class="top-left">
+          <button class="icon-btn mobile-menu" id="openSidebar"><i class="fa-solid fa-bars"></i></button>
+          <div class="top-avatar" id="topAvatar">A</div>
+          <div class="top-person"><strong id="topTitle">Your private space</strong><small id="topSubtitle"><span class="status-dot"></span> Your conversations, your world</small></div>
+        </div>
+        <div class="top-actions">
+          <button class="icon-btn" id="themeBtn" title="Switch theme"><i class="fa-solid fa-circle-half-stroke"></i></button>
+          <button class="icon-btn" id="translateBtn" title="Translate last message"><i class="fa-solid fa-language"></i></button>
+          <button class="icon-btn" id="callBtn" title="Start call"><i class="fa-solid fa-phone"></i></button>
+          <button class="icon-btn" id="moreBtn" title="More options"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+        </div>
+      </header>
+
+      <section class="view-panel active" id="view-chats">
+        <div class="welcome-banner" id="welcomeBanner">
+          <div class="banner-orb orb-one"></div><div class="banner-orb orb-two"></div>
+          <div class="banner-content">
+            <div class="eyebrow"><i class="fa-solid fa-sparkles"></i> YOUR SPACE, REIMAGINED</div>
+            <h2>Conversations<br>with <span>more feeling.</span></h2>
+            <p>Message, create, share and connect — all in one beautiful space.</p>
+            <button class="primary-btn" id="startChat"><i class="fa-solid fa-paper-plane"></i> Start a conversation</button>
+          </div>
+          <div class="banner-art"><div class="art-ring ring-a"></div><div class="art-ring ring-b"></div><div class="art-core"><i class="fa-solid fa-asterisk"></i></div><div class="float-bubble bubble-a"><i class="fa-solid fa-heart"></i></div><div class="float-bubble bubble-b"><i class="fa-solid fa-bolt"></i></div></div>
+        </div>
+
+        <div class="message-area" id="messageArea">
+          <div class="empty-state" id="emptyState">
+            <div class="empty-icon"><i class="fa-regular fa-comments"></i></div>
+            <h2>A little space to connect.</h2>
+            <p>Choose a conversation or start a new one.</p>
+          </div>
+          <div class="messages" id="messages"></div>
+        </div>
+
+        <div class="composer-wrap" id="composerWrap">
+          <div class="composer-tools">
+            <button class="tool-btn" id="attachBtn" title="Attach image"><i class="fa-solid fa-paperclip"></i></button>
+            <button class="tool-btn" id="emojiBtn" title="Insert emoji"><i class="fa-regular fa-face-smile"></i></button>
+            <button class="tool-btn" id="voiceBtn" title="Record voice message"><i class="fa-solid fa-microphone"></i></button>
+            <span class="composer-hint" id="composerHint">A kind message can change someone's day.</span>
+            <button class="tool-btn" id="aiPromptBtn" title="Ask AI"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+          </div>
+          <div class="composer">
+            <textarea id="messageInput" rows="1" placeholder="Write something lovely..." aria-label="Message"></textarea>
+            <button class="send-btn" id="sendBtn" title="Send message"><i class="fa-solid fa-arrow-up"></i></button>
+          </div>
+          <div class="composer-foot"><span>Enter to send · Shift + Enter for a new line</span><span><i class="fa-solid fa-lock"></i> Private by design</span></div>
+        </div>
+      </section>
+
+      <section class="view-panel feature-view" id="view-status">
+        <div class="feature-heading"><div><span class="eyebrow">LITTLE MOMENTS</span><h2>Status & Stories</h2><p>Share a moment that deserves to be seen.</p></div><button class="primary-btn" id="addStatus"><i class="fa-solid fa-plus"></i> Add status</button></div>
+        <div class="status-create card"><div class="status-ring"><div class="avatar avatar-me">H</div><span>+</span></div><div><strong>Your status</strong><p>Share text or an image. Statuses expire after 24 hours.</p></div><button class="secondary-btn" id="addStatus2">Create</button></div>
+        <div class="section-caption">RECENT UPDATES</div><div class="status-grid" id="statusGrid"></div>
+      </section>
+
+      <section class="view-panel feature-view" id="view-communities">
+        <div class="feature-heading"><div><span class="eyebrow">FIND YOUR PEOPLE</span><h2>Communities</h2><p>Bring your favorite people together.</p></div><button class="primary-btn" id="createCommunity"><i class="fa-solid fa-plus"></i> Create community</button></div>
+        <div class="feature-grid" id="communityGrid"></div>
+      </section>
+
+      <section class="view-panel feature-view" id="view-channels">
+        <div class="feature-heading"><div><span class="eyebrow">BROADCAST SOMETHING GOOD</span><h2>Channels</h2><p>Follow updates or publish an announcement.</p></div><button class="primary-btn" id="createChannel"><i class="fa-solid fa-plus"></i> New channel</button></div>
+        <div class="feature-grid" id="channelGrid"></div>
+      </section>
+
+      <section class="view-panel feature-view" id="view-calls">
+        <div class="feature-heading"><div><span class="eyebrow">STAY CLOSE</span><h2>Calls</h2><p>Voice and video call activity.</p></div><button class="primary-btn" id="startCall"><i class="fa-solid fa-phone"></i> Start a call</button></div>
+        <div class="call-notice"><i class="fa-solid fa-circle-info"></i> Calls shown here are a UI demo. Real internet calls require WebRTC signaling and a reachable peer.</div>
+        <div class="call-list card" id="callHistory"></div>
+      </section>
+
+      <section class="view-panel feature-view" id="view-ai">
+        <div class="feature-heading"><div><span class="eyebrow">YOUR CREATIVE COMPANION</span><h2>AI Assistant</h2><p>Brainstorm, rewrite, translate or ask anything.</p></div><div class="ai-badge"><i class="fa-solid fa-sparkles"></i> VYRA AI</div></div>
+        <div class="ai-intro card"><div class="ai-big-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div><h3>What shall we create today?</h3><p>Pick a prompt or write your own below.</p><div class="prompt-grid"><button class="prompt-card" data-prompt="Write a warm and friendly greeting."><i class="fa-regular fa-heart"></i><span>Write a greeting</span></button><button class="prompt-card" data-prompt="Give me five creative ideas for a project."><i class="fa-solid fa-lightbulb"></i><span>Brainstorm ideas</span></button><button class="prompt-card" data-prompt="Help me translate a message into Urdu."><i class="fa-solid fa-language"></i><span>Translate text</span></button><button class="prompt-card" data-prompt="Rewrite my message to sound professional and kind."><i class="fa-solid fa-pen-nib"></i><span>Improve my writing</span></button></div><div class="ai-input-row"><input id="aiInput" placeholder="Ask VYRA anything..."><button class="send-btn" id="askAi"><i class="fa-solid fa-arrow-up"></i></button></div><small class="ai-footnote">Connect a secure AI backend to enable real AI responses.</small></div>
+      </section>
+    </main>
+  </div>
+
+  <input type="file" id="fileInput" accept="image/*" hidden>
+  <input type="file" id="statusFileInput" accept="image/*" hidden>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <div class="modal-backdrop" id="modalBackdrop">
+    <div class="modal card">
+      <div class="modal-head"><h3 id="modalTitle">Create</h3><button class="icon-btn" id="modalClose"><i class="fa-solid fa-xmark"></i></button></div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div class="call-overlay" id="callOverlay">
+    <div class="call-orb"><i class="fa-solid fa-asterisk"></i></div>
+    <span class="eyebrow">VYRA CALL</span><h2 id="callName">Calling...</h2><p id="callStatus">Demo call interface</p>
+    <div class="call-controls"><button id="muteCall" title="Mute"><i class="fa-solid fa-microphone"></i></button><button id="videoCall" title="Video"><i class="fa-solid fa-video"></i></button><button class="end-call" id="endCall" title="End call"><i class="fa-solid fa-phone-slash"></i></button></div>
+  </div>
+
+  <script type="module" src="App.js"></script>
+</body>
+</html>
